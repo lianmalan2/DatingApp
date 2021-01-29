@@ -11,9 +11,10 @@ namespace API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IConfiguration Config { get; }
+        public Startup(IConfiguration config)
         {
-            Configuration = configuration;
+            Config = config;
         }
 
         public IConfiguration Configuration { get; }
@@ -23,7 +24,7 @@ namespace API
         {
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlite("TODO");
+                options.UseSqlite(Config.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers();
             services.AddSwaggerGen(c =>
