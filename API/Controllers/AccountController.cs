@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,12 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         private DataContext Context { get; }
-        public AccountController(DataContext context)
+        private ITokenService TokenSvc { get; }
+
+        public AccountController(DataContext context, ITokenService tokenSvc)
         {
             Context = context;
+            TokenSvc = tokenSvc;
         }
 
         private async Task<bool> UserExists(string username)
@@ -24,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             var username = registerDto.Username.ToLower().Trim();
             if (await UserExists(username))
@@ -42,12 +46,16 @@ namespace API.Controllers
                 Context.Users.Add(user);
                 await Context.SaveChangesAsync();
 
-                return user;
+                return new UserDto
+                {
+                    Username = user.UserName,
+                    Token = TokenSvc.CreateToken(user),
+                };
             }
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var errorMessage = "Invalid Username / Password";
             var user = await Context.Users.SingleOrDefaultAsync(user => user.UserName.Equals(loginDto.Username.ToLower()));
@@ -61,7 +69,11 @@ namespace API.Controllers
                     return Unauthorized(errorMessage);
             }
 
-            return user;
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = TokenSvc.CreateToken(user),
+            };
         }
     }
 }
