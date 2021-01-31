@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using API.Data;
@@ -19,13 +20,13 @@ namespace API.Controllers
 
         private async Task<bool> UserExists(string username)
         {
-            return await Context.Users.AnyAsync(user => user.UserName.Equals(username));
+            return await Context.Users.AnyAsync(user => user.UserName.Equals(username.ToLower()));
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register([FromBody] RegisterDto inputUser)
+        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         {
-            var username = inputUser.Username.ToLower().Trim();
+            var username = registerDto.Username.ToLower().Trim();
             if (await UserExists(username))
                 return BadRequest("Username is taken");
 
@@ -34,7 +35,7 @@ namespace API.Controllers
                 var user = new AppUser
                 {
                     UserName = username,
-                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(inputUser.Password)),
+                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                     PasswordSalt = hmac.Key,
                 };
 
@@ -43,6 +44,24 @@ namespace API.Controllers
 
                 return user;
             }
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        {
+            var errorMessage = "Invalid Username / Password";
+            var user = await Context.Users.SingleOrDefaultAsync(user => user.UserName.Equals(loginDto.Username.ToLower()));
+            if (user == null)
+                return Unauthorized(errorMessage);
+
+            using (var hmac = new HMACSHA512(user.PasswordSalt))
+            {
+                var loginHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+                if (loginHash.Zip(user.PasswordHash).Any(h => h.First != h.Second))
+                    return Unauthorized(errorMessage);
+            }
+
+            return user;
         }
     }
 }
