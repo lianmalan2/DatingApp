@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AppUser } from 'src/app/entities/user';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -6,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+  @Input() users$: Observable<AppUser[]>;
   model: any = {};
 
   register() {
