@@ -1,15 +1,16 @@
-import { Observable, ReplaySubject } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { catchError, first, map, mergeMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { loginInput } from '../entities/login';
-import { User } from '../entities/user';
+import { AppUser, User } from '../entities/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private _currentUserSource = new ReplaySubject<User>(1);
+  private _httpRequestOptions$: Observable<{ [header: string]: string | string[] }> = of({});
 
   currentUser$ = this._currentUserSource.asObservable();
   isLoggedIn$ = this.currentUser$.pipe(
@@ -17,7 +18,23 @@ export class AccountService {
   );
   baseUrl = 'https://localhost:5001/api/';
 
-  constructor(private _http: HttpClient) { }
+  constructor(
+    private _http: HttpClient,
+  ) {
+    this._httpRequestOptions$ = this.currentUser$.pipe(
+      map((user) => {
+        if (!user) {
+          return {};
+        }
+
+        const headers = {}
+        headers['Authorization'] = `Bearer ${user.token}`;
+
+        return headers;
+      }),
+    );
+
+  }
 
   login(model: loginInput): Observable<User> {
     const result = this._http.post(`${this.baseUrl}account/login`, model) as Observable<User>;
@@ -31,7 +48,7 @@ export class AccountService {
       }),
       catchError((err) => {
         console.log(err);
-        throw err;
+        return of(null);
       })
     )
   }
@@ -43,5 +60,15 @@ export class AccountService {
   logout(): void {
     localStorage.removeItem('user');
     this._currentUserSource.next(null);
+  }
+
+  getUsers(): Observable<AppUser[]> {
+    return this._httpRequestOptions$.pipe(
+      mergeMap((opts) => this._http.get(`${this.baseUrl}users`, { headers: opts }) as Observable<AppUser[]>),
+      catchError((err) => {
+        console.log(err);
+        return of([]);
+      }),
+    );
   }
 }
