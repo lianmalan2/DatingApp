@@ -1,5 +1,5 @@
 import { Observable, ReplaySubject } from 'rxjs';
-import { catchError, first, tap } from 'rxjs/operators';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { loginInput } from '../entities/login';
@@ -12,6 +12,9 @@ export class AccountService {
   private _currentUserSource = new ReplaySubject<User>(1);
 
   currentUser$ = this._currentUserSource.asObservable();
+  isLoggedIn$ = this.currentUser$.pipe(
+    map((user) => !!user),
+  );
   baseUrl = 'https://localhost:5001/api/';
 
   constructor(private _http: HttpClient) { }

@@ -11,9 +11,6 @@
       <li class="nav-item button">
         <a class="nav-link">Messages</a>
       </li>
-      <li class="nav-item button">
-        <a class="nav-link" (click)="logout()">Logout</a>
-      </li>
     </ul>
 
     <div class="dropdown" *ngIf="loggedIn$ | async" dropdown>
@@ -35,14 +32,14 @@
     >
       <input
         name="username"
-        [(ngModel)]="model.username"
+        [(ngModel)]="userLogin.username"
         class="form-control me-2"
         type="text"
         placeholder="Username"
       />
       <input
         name="password"
-        [(ngModel)]="model.password"
+        [(ngModel)]="userLogin.password"
         class="form-control me-2"
         type="password"
         placeholder="Password"
