@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, first, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { appUser } from './entities/app-user';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'The Dating App';
-  users$: Observable<any>;
+  users$: Observable<appUser>;
 
   constructor(
     private _http: HttpClient,
