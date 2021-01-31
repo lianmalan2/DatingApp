@@ -12,7 +12,8 @@ namespace API.Services
 {
     public class TokenService : ITokenService
     {
-        public SymmetricSecurityKey Key { get; set; }
+        private SymmetricSecurityKey Key { get; }
+
         public TokenService(IConfiguration config)
         {
             Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));

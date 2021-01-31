@@ -10,6 +10,7 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private DataContext Context { get; }
+
         public UsersController(DataContext context)
         {
             Context = context;
