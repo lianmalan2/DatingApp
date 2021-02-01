@@ -1,9 +1,8 @@
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, first, map, mergeMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
-import { loginInput } from '../entities/login';
-import { AppUser, User } from '../entities/user';
+import { Injectable } from '@angular/core';
+import { AppUser, loginInput, registerInput, User } from '../entities/user';
 
 @Injectable({
   providedIn: 'root'
@@ -33,14 +32,30 @@ export class AccountService {
         return headers;
       }),
     );
-
   }
 
   login(model: loginInput): Observable<User> {
-    const result = this._http.post(`${this.baseUrl}account/login`, model) as Observable<User>;
+    const result = this._http.post(`${this.baseUrl}account/login`, model);
     return result.pipe(
       first(),
-      tap((user) => {
+      tap((user: User) => {
+        if (!!user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          this._currentUserSource.next(user);
+        }
+      }),
+      catchError((err) => {
+        console.log(err);
+        return of(null);
+      })
+    )
+  }
+
+  register(model: registerInput): Observable<User> {
+    const result = this._http.post(`${this.baseUrl}account/register`, model);
+    return result.pipe(
+      first(),
+      tap((user: User) => {
         if (!!user) {
           localStorage.setItem('user', JSON.stringify(user));
           this._currentUserSource.next(user);

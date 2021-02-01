@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { loginInput } from 'src/app/entities/login';
+import { loginInput } from 'src/app/entities/user';
 import { AccountService } from 'src/app/services/account.service';
 import { Component, OnInit } from '@angular/core';
 
