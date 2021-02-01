@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, first, map, mergeMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +20,7 @@ export class AccountService {
 
   constructor(
     private _http: HttpClient,
+    private _toastrSvc: ToastrService,
   ) {
     this._httpRequestOptions$ = this.currentUser$.pipe(
       map((user) => {
@@ -46,6 +48,7 @@ export class AccountService {
       }),
       catchError((err) => {
         console.log(err);
+        this._toastrSvc.error(err.error);
         return of(null);
       })
     )
@@ -63,6 +66,7 @@ export class AccountService {
       }),
       catchError((err) => {
         console.log(err);
+        this._toastrSvc.error(err.error);
         return of(null);
       })
     )
