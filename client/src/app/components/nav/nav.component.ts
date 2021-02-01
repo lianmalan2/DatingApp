@@ -29,8 +29,10 @@ export class NavComponent implements OnInit {
   }
 
   login(): void {
-    this._accountSvc.login(this.userLogin).subscribe(() => {
-      this._routerSvc.navigateByUrl('/members');
+    this._accountSvc.login(this.userLogin).subscribe((response) => {
+      if (!!response) {
+        this._routerSvc.navigateByUrl('/members');
+      }
     });
   }
 
