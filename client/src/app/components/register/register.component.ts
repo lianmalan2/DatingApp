@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { AppUser } from 'src/app/entities/user';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -9,6 +9,8 @@ import { Component, Input } from '@angular/core';
 })
 export class RegisterComponent {
   @Input() users$: Observable<AppUser[]>;
+  @Output() cancelRegister = new EventEmitter();
+
   model: any = {};
 
   register() {
@@ -16,6 +18,6 @@ export class RegisterComponent {
   }
 
   cancel() {
-    console.log('cancelled');
+    this.cancelRegister.emit(false);
   }
 }
