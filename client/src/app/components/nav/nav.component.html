@@ -23,7 +23,7 @@
 
     <div class="dropdown" *ngIf="loggedIn$ | async" dropdown>
       <a class="dropdown-toggle text-light button" dropdownToggle>
-        Welcome User</a
+        Welcome {{ (currentUser$ | async).username | titlecase }}</a
       >
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item button">Edit Profile</a>
