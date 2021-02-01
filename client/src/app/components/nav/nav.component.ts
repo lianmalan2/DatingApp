@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { loginInput } from 'src/app/entities/user';
 import { AccountService } from 'src/app/services/account.service';
@@ -17,7 +18,8 @@ export class NavComponent implements OnInit {
 
   constructor(
     private _accountSvc: AccountService,
-    private _routerSvc: Router
+    private _routerSvc: Router,
+    private _toastrSvc: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -25,7 +27,9 @@ export class NavComponent implements OnInit {
   }
 
   login(): void {
-    this._accountSvc.login(this.userLogin).subscribe(() => this._routerSvc.navigateByUrl('/members'));
+    this._accountSvc.login(this.userLogin).subscribe(() => {
+      this._routerSvc.navigateByUrl('/members');
+    });
   }
 
   logout() {
