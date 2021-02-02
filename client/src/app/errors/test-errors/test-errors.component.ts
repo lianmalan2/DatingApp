@@ -1,5 +1,3 @@
-import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
@@ -11,61 +9,45 @@ import { Component } from '@angular/core';
 export class TestErrorsComponent {
   baseUrl = 'https://localhost:5001/api/';
 
-  /**
-   *
-   */
-  constructor(private _httpSvc: HttpClient) {
-
-  }
-
+  constructor(private _httpSvc: HttpClient) { }
 
   get404Error() {
-    this._httpSvc.get(`${this.baseUrl}buggy/not-found`).pipe(
-      tap(response => console.log(response)),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      }),
-    ).subscribe();
+    this._httpSvc.get(`${this.baseUrl}buggy/not-found`).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error);
+    });
   }
 
   get400Error() {
-    this._httpSvc.get(`${this.baseUrl}buggy/bad-request`).pipe(
-      tap(response => console.log(response)),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      }),
-    ).subscribe();
+    this._httpSvc.get(`${this.baseUrl}buggy/bad-request`).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error);
+    });
   }
 
   get500Error() {
-    this._httpSvc.get(`${this.baseUrl}buggy/server-error`).pipe(
-      tap(response => console.log(response)),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      }),
-    ).subscribe();
+    this._httpSvc.get(`${this.baseUrl}buggy/server-error`).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error);
+    });
   }
 
   get401Error() {
-    this._httpSvc.get(`${this.baseUrl}buggy/auth`).pipe(
-      tap(response => console.log(response)),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      }),
-    ).subscribe();
+    this._httpSvc.get(`${this.baseUrl}buggy/auth`).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error);
+    });
   }
 
   get400ValidationError() {
-    this._httpSvc.post(`${this.baseUrl}account/register`, {}).pipe(
-      tap(response => console.log(response)),
-      catchError(err => {
-        console.log(err);
-        return of(null);
-      }),
-    ).subscribe();
+    this._httpSvc.post(`${this.baseUrl}account/register`, {}).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error);
+    });
   }
 }
