@@ -16,6 +16,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { SharedModule } from './modules/shared.module';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SharedModule } from './modules/shared.module';
     ListsComponent,
     MessagesComponent,
     TestErrorsComponent,
+    NotFoundComponent,
   ],
   imports: [
     AppRoutingModule,
