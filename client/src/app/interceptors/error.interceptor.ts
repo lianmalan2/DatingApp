@@ -27,7 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                   }
                 }
 
-                throw modelStateErrors;
+                throw modelStateErrors.flat();
               }
 
               this._toasterSvc.error(error.statusText, error.status)

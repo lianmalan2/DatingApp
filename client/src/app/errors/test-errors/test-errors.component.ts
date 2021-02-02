@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class TestErrorsComponent {
   baseUrl = 'https://localhost:5001/api/';
+  validationErrors: string[] = [];
 
   constructor(private _httpSvc: HttpClient) { }
 
@@ -47,7 +48,8 @@ export class TestErrorsComponent {
     this._httpSvc.post(`${this.baseUrl}account/register`, {}).subscribe(response => {
       console.log(response);
     }, error => {
-      console.log(error);
+        console.log(error);
+        this.validationErrors = error;
     });
   }
 }
