@@ -27,7 +27,9 @@ namespace API.Repositories
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await Context.Users.ToListAsync();
+            return await Context.Users
+                .Include(u => u.Photos)
+                .ToListAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
@@ -37,7 +39,9 @@ namespace API.Repositories
 
         public async Task<AppUser> getUserByUsernameAsync(string username)
         {
-            return await Context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            return await Context.Users
+                .Include(u => u.Photos)
+                .SingleOrDefaultAsync(u => u.UserName == username);
         }
     }
 }
