@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using API.Extensions;
 
 namespace API.Entities
@@ -24,5 +25,8 @@ namespace API.Entities
 
         public int GetAge() =>
             DateOfBirth.CalculateAge();
+
+        public string GetPhotoUrl() =>
+            Photos.FirstOrDefault(p => p.IsMain)?.Url;
     }
 }
