@@ -1,6 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, first, map, mergeMap, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppUser, loginInput, registerInput, User } from '../models/user';
@@ -11,12 +12,12 @@ import { AppUser, loginInput, registerInput, User } from '../models/user';
 export class AccountService {
   private _currentUserSource = new ReplaySubject<User>(1);
   private _httpRequestOptions$: Observable<{ [header: string]: string | string[] }> = of({});
+  private _baseUrl = environment.apiUrl;
 
   currentUser$ = this._currentUserSource.asObservable();
   isLoggedIn$ = this.currentUser$.pipe(
     map((user) => !!user),
   );
-  baseUrl = 'https://localhost:5001/api/';
 
   constructor(
     private _http: HttpClient,
@@ -37,7 +38,7 @@ export class AccountService {
   }
 
   login(model: loginInput): Observable<User> {
-    const result = this._http.post(`${this.baseUrl}account/login`, model);
+    const result = this._http.post(`${this._baseUrl}account/login`, model);
     return result.pipe(
       first(),
       tap((user: User) => {
@@ -50,7 +51,7 @@ export class AccountService {
   }
 
   register(model: registerInput): Observable<User> {
-    const result = this._http.post(`${this.baseUrl}account/register`, model);
+    const result = this._http.post(`${this._baseUrl}account/register`, model);
     return result.pipe(
       first(),
       tap((user: User) => {
@@ -78,7 +79,7 @@ export class AccountService {
 
   getUsers(): Observable<AppUser[]> {
     return this._httpRequestOptions$.pipe(
-      mergeMap((opts) => this._http.get(`${this.baseUrl}users`, { headers: opts }) as Observable<AppUser[]>),
+      mergeMap((opts) => this._http.get(`${this._baseUrl}users`, { headers: opts }) as Observable<AppUser[]>),
       catchError((err) => {
         console.log(err);
         return of([]);
