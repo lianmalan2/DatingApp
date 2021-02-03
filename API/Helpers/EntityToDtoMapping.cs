@@ -7,8 +7,7 @@ namespace API.Helpers
     {
         protected partial void EntityToDtoMapping()
         {
-            CreateMap<AppUser, MemberDto>()
-                .ForMember(d => d.Age, o => o.MapFrom(s => s.GetAge()));
+            CreateMap<AppUser, MemberDto>();
 
             CreateMap<Photo, PhotoDto>();
         }
