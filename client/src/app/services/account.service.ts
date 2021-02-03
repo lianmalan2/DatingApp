@@ -3,7 +3,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, first, map, mergeMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AppUser, loginInput, registerInput, User } from '../entities/user';
+import { AppUser, loginInput, registerInput, User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
