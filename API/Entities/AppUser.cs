@@ -22,11 +22,5 @@ namespace API.Entities
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
-
-        public int GetAge() =>
-            DateOfBirth.CalculateAge();
-
-        public string GetPhotoUrl() =>
-            Photos.FirstOrDefault(p => p.IsMain)?.Url;
     }
 }
