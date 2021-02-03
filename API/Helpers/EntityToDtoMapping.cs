@@ -1,5 +1,7 @@
-﻿using API.DTOs;
+﻿using System.Linq;
+using API.DTOs;
 using API.Entities;
+using API.Extensions;
 
 namespace API.Helpers
 {
@@ -7,7 +9,9 @@ namespace API.Helpers
     {
         protected partial void EntityToDtoMapping()
         {
-            CreateMap<AppUser, MemberDto>();
+            CreateMap<AppUser, MemberDto>()
+                .ForMember(d => d.Age, o => o.MapFrom(s => s.DateOfBirth.CalculateAge()))
+                .ForMember(d => d.PhotoUrl, o => o.MapFrom(s => s.Photos.FirstOrDefault(p => p.IsMain).Url));
 
             CreateMap<Photo, PhotoDto>();
         }

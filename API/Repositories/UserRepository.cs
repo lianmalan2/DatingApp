@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
@@ -10,9 +14,12 @@ namespace API.Repositories
     public class UserRepository : IUserRepository
     {
         private DataContext Context { get; }
-        public UserRepository(DataContext context)
+        private IMapper Mapper { get; }
+
+        public UserRepository(DataContext context, IMapper mapper)
         {
             Context = context;
+            Mapper = mapper;
         }
 
         public void Update(AppUser user)
@@ -42,6 +49,21 @@ namespace API.Repositories
             return await Context.Users
                 .Include(u => u.Photos)
                 .SingleOrDefaultAsync(u => u.UserName == username);
+        }
+
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            return await Context.Users
+                .ProjectTo<MemberDto>(Mapper.ConfigurationProvider)
+                .ToListAsync(); ;
+        }
+
+        public async Task<MemberDto> GetMemberAsync(string username)
+        {
+            return await Context.Users
+                .Where(u => u.UserName == username)
+                .ProjectTo<MemberDto>(Mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
         }
     }
 }
