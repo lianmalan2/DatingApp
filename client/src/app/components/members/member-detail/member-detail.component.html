@@ -1,1 +1,1 @@
-<p>member-detail works!</p>
+<h1 *ngIf="(member$ | async)?.knownAs; let knownAs">{{ knownAs }}</h1>
