@@ -1,12 +1,6 @@
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    Authorization: `Bearer ${JSON.parse(localStorage.getItem('user'))?.token}`
-  })
-}
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +13,6 @@ export class BaseApiService {
   ) { }
 
   getByRoute<T>(route: string, ...params: any[]) {
-    return this._http.get<T>(`${this._baseUrl}${route}`, httpOptions);
+    return this._http.get<T>(`${this._baseUrl}${route}`);
   }
 }
