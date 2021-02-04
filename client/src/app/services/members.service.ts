@@ -16,6 +16,6 @@ export class MembersService {
   }
 
   getMember(username: string) {
-    return this._apiSvc.getByRoute<Member>(`users/${username}`)
+    return this._apiSvc.getByRoute<Member>(`users/${username}`);
   }
 }
