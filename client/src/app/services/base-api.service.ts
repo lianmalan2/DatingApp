@@ -12,7 +12,11 @@ export class BaseApiService {
     private _http: HttpClient,
   ) { }
 
-  getByRoute<T>(route: string, ...params: any[]): any {
+  getByRoute<T>(route: string): any {
     return this._http.get<T>(`${this._baseUrl}${route}`);
+  }
+
+  putByRoute<T>(route: string, body: any): any {
+    return this._http.put<T>(`${this._baseUrl}${route}`, body);
   }
 }
