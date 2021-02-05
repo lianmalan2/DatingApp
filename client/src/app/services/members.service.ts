@@ -18,4 +18,8 @@ export class MembersService {
   getMember(username: string): Observable<Member> {
     return this._apiSvc.getByRoute<Member>(`users/${username}`);
   }
+
+  updateMember(member: Member): Observable<any> {
+    return this._apiSvc.putByRoute('users', member);
+  }
 }
