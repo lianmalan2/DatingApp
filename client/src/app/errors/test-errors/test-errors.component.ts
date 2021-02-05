@@ -10,9 +10,11 @@ export class TestErrorsComponent {
   baseUrl = 'https://localhost:5001/api/';
   validationErrors: string[] = [];
 
-  constructor(private _httpSvc: HttpClient) { }
+  constructor(
+    private _httpSvc: HttpClient,
+  ) { }
 
-  get404Error() {
+  get404Error(): void {
     this._httpSvc.get(`${this.baseUrl}buggy/not-found`).subscribe(response => {
       console.log(response);
     }, error => {
@@ -20,7 +22,7 @@ export class TestErrorsComponent {
     });
   }
 
-  get400Error() {
+  get400Error(): void {
     this._httpSvc.get(`${this.baseUrl}buggy/bad-request`).subscribe(response => {
       console.log(response);
     }, error => {
@@ -28,7 +30,7 @@ export class TestErrorsComponent {
     });
   }
 
-  get500Error() {
+  get500Error(): void {
     this._httpSvc.get(`${this.baseUrl}buggy/server-error`).subscribe(response => {
       console.log(response);
     }, error => {
@@ -36,7 +38,7 @@ export class TestErrorsComponent {
     });
   }
 
-  get401Error() {
+  get401Error(): void {
     this._httpSvc.get(`${this.baseUrl}buggy/auth`).subscribe(response => {
       console.log(response);
     }, error => {
@@ -44,12 +46,12 @@ export class TestErrorsComponent {
     });
   }
 
-  get400ValidationError() {
+  get400ValidationError(): void {
     this._httpSvc.post(`${this.baseUrl}account/register`, {}).subscribe(response => {
       console.log(response);
     }, error => {
-        console.log(error);
-        this.validationErrors = error;
+      console.log(error);
+      this.validationErrors = error;
     });
   }
 }

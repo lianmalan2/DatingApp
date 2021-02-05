@@ -1,24 +1,19 @@
-import { AccountService } from 'src/app/services/account.service';
-import { Component, OnInit } from '@angular/core';
+
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   registerMode = false;
 
-  constructor(private _accountSvc: AccountService) { }
-
-  ngOnInit(): void {
-  }
-
-  registerToggle() {
+  registerToggle(): void {
     this.registerMode = !this.registerMode;
   }
 
-  cancelRegisterMode(event: boolean) {
+  cancelRegisterMode(event: boolean): void {
     this.registerMode = event;
   }
 }

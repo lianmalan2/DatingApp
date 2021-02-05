@@ -19,11 +19,11 @@
           </a>
         </li>
       </ng-container>
-        <li class="nav-item button">
-          <a class="nav-link" routerLink="/errors" routerLinkActive="active">
-            Errors
-          </a>
-        </li>
+      <li class="nav-item button">
+        <a class="nav-link" routerLink="/errors" routerLinkActive="active">
+          Errors
+        </a>
+      </li>
     </ul>
 
     <div class="dropdown" *ngIf="loggedIn$ | async" dropdown>
@@ -41,7 +41,7 @@
       class="d-flex"
       (ngSubmit)="login()"
       autocomplete="off"
-      *ngIf="(loggedIn$ | async) == false"
+      *ngIf="(loggedIn$ | async) === false"
     >
       <input
         name="username"

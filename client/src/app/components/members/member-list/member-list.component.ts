@@ -18,7 +18,7 @@ export class MemberListComponent implements OnInit {
     this.loadMembers();
   }
 
-  loadMembers() {
+  loadMembers(): void {
     this._memberSvc.getMembers().subscribe(members =>
       this.members = members
     );

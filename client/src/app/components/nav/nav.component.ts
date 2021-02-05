@@ -1,6 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { loginInput, User } from 'src/app/models/user';
+import { LoginInput, User } from 'src/app/models/user';
 import { AccountService } from 'src/app/services/account.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  private initialLogin: loginInput = { username: null, password: null };
+  private initialLogin: LoginInput = { username: null, password: null };
 
-  userLogin: loginInput = { ...this.initialLogin };
+  userLogin: LoginInput = { ...this.initialLogin };
   loggedIn$: Observable<boolean>;
   currentUser$: Observable<User>;
 
@@ -36,7 +36,7 @@ export class NavComponent implements OnInit {
     });
   }
 
-  logout() {
+  logout(): void {
     this._accountSvc.logout();
     this.userLogin = { ...this.initialLogin };
     this._routerSvc.navigateByUrl('/');

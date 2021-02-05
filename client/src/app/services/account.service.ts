@@ -4,7 +4,7 @@ import { catchError, first, map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AppUser, loginInput, registerInput, User } from '../models/user';
+import { AppUser, LoginInput, RegisterInput, User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class AccountService {
           return {};
         }
 
-        const headers = {}
+        const headers = {};
         headers['Authorization'] = `Bearer ${user.token}`;
 
         return headers;
@@ -37,7 +37,7 @@ export class AccountService {
     );
   }
 
-  login(model: loginInput): Observable<User> {
+  login(model: LoginInput): Observable<User> {
     const result = this._http.post(`${this._baseUrl}account/login`, model);
     return result.pipe(
       first(),
@@ -47,10 +47,10 @@ export class AccountService {
           this._currentUserSource.next(user);
         }
       }),
-    )
+    );
   }
 
-  register(model: registerInput): Observable<User> {
+  register(model: RegisterInput): Observable<User> {
     const result = this._http.post(`${this._baseUrl}account/register`, model);
     return result.pipe(
       first(),
@@ -65,7 +65,7 @@ export class AccountService {
         this._toastrSvc.error(err.error);
         return of(null);
       })
-    )
+    );
   }
 
   setCurrentUser(user: User): void {
