@@ -19,6 +19,7 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { SharedModule } from './modules/shared.module';
+import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SharedModule } from './modules/shared.module';
     NotFoundComponent,
     ServerErrorComponent,
     MemberCardComponent,
+    MemberEditComponent,
   ],
   imports: [
     AppRoutingModule,
