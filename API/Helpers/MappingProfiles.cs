@@ -7,8 +7,10 @@ namespace API.Helpers
         public MappingProfiles()
         {
             EntityToDtoMapping();
+            DtoToEntityMapping();
         }
 
         protected partial void EntityToDtoMapping();
+        protected partial void DtoToEntityMapping();
     }
 }
