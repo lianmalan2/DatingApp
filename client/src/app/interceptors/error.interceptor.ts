@@ -30,11 +30,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                 throw modelStateErrors.flat();
               }
 
-              this._toasterSvc.error(error.statusText, error.status)
+              this._toasterSvc.error(error.statusText, error.status);
               break;
 
             case 401:
-              this._toasterSvc.error(error.statusText, error.status)
+              this._toasterSvc.error(error.statusText, error.status);
               break;
 
             case 404:
@@ -42,7 +42,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
 
             case 500:
-              const navigationExtras: NavigationExtras = { state: { error: error.error } }
+              const navigationExtras: NavigationExtras = { state: { error: error.error } };
               this._routerSvc.navigateByUrl('/server-error', navigationExtras);
               break;
 

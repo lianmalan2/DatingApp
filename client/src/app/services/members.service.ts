@@ -15,7 +15,7 @@ export class MembersService {
     return this._apiSvc.getByRoute<Member[]>('users');
   }
 
-  getMember(username: string) {
+  getMember(username: string): Observable<Member> {
     return this._apiSvc.getByRoute<Member>(`users/${username}`);
   }
 }

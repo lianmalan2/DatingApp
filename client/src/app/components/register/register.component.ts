@@ -13,7 +13,7 @@ export class RegisterComponent {
 
   constructor(private _accountSvc: AccountService) { }
 
-  register() {
+  register(): void {
     this._accountSvc.register(this.model).subscribe(user => {
       if (!!user) {
         this.cancel();
@@ -21,7 +21,7 @@ export class RegisterComponent {
     });
   }
 
-  cancel() {
+  cancel(): void {
     this.cancelRegister.emit(false);
   }
 }
