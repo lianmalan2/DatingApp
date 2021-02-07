@@ -1,26 +1,17 @@
+import { Observable } from 'rxjs';
 import { Member } from 'src/app/models/member';
 import { MembersService } from 'src/app/services/members.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.scss']
 })
-export class MemberListComponent implements OnInit {
-  members: Member[];
+export class MemberListComponent {
+  members$: Observable<Member[]> = this._memberSvc.getMembers();
 
   constructor(
     private _memberSvc: MembersService,
   ) { }
-
-  ngOnInit(): void {
-    this.loadMembers();
-  }
-
-  loadMembers(): void {
-    this._memberSvc.getMembers().subscribe(members =>
-      this.members = members
-    );
-  }
 }
