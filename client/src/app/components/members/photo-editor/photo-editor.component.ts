@@ -1,8 +1,7 @@
 import { FileUploader } from 'ng2-file-upload';
-import { first } from 'rxjs/operators';
-import { Member } from 'src/app/models/member';
-import { User } from 'src/app/models/user';
-import { AccountService } from 'src/app/services/account.service';
+import { take } from 'rxjs/operators';
+import { Member, User } from 'src/app/models';
+import { AccountService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -11,7 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './photo-editor.component.html',
   styleUrls: ['./photo-editor.component.scss']
 })
-export class PhotoEditorComponent implements OnInit{
+export class PhotoEditorComponent implements OnInit {
   @Input() member: Member;
   uploader: FileUploader;
   hasBaseDropzoneOver = false;
@@ -19,7 +18,7 @@ export class PhotoEditorComponent implements OnInit{
   user: User;
 
   constructor(private _accountSvc: AccountService) {
-    this._accountSvc.currentUser$.pipe(first()).subscribe(user => this.user = user);
+    this._accountSvc.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
   ngOnInit(): void {
@@ -32,8 +31,8 @@ export class PhotoEditorComponent implements OnInit{
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + 'users/add-photo',
-      authToken: 'Bearer' + this.user.token,
+      url: `${this.baseUrl}users/add-photo`,
+      authToken: `Bearer ${this.user.token}`,
       isHTML5: true,
       allowedFileType: ['image'],
       removeAfterUpload: true,

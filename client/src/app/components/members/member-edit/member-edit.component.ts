@@ -1,10 +1,8 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { first, mergeMap } from 'rxjs/operators';
-import { Member } from 'src/app/models/member';
-import { User } from 'src/app/models/user';
-import { AccountService } from 'src/app/services/account.service';
-import { MembersService } from 'src/app/services/members.service';
+import { Member, User } from 'src/app/models';
+import { AccountService, MembersService } from 'src/app/services';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 

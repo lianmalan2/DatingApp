@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PhotoEditorComponent } from './photo-editor.component';
 
 describe('PhotoEditorComponent', () => {
@@ -8,9 +7,8 @@ describe('PhotoEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PhotoEditorComponent ]
-    })
-    .compileComponents();
+      declarations: [PhotoEditorComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
