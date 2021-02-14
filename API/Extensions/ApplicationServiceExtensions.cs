@@ -18,6 +18,8 @@ namespace API.Extensions
 
             // Services
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
+
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
