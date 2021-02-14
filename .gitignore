@@ -4,3 +4,4 @@
 *.csproj.user
 .cr/*
 *.db
+StudentAssets/*

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { Member } from 'src/app/models/member';
-import { MembersService } from 'src/app/services/members.service';
+import { Member } from 'src/app/models';
+import { MembersService } from 'src/app/services';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';

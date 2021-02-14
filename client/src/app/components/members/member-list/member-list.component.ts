@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
-import { Member } from 'src/app/models/member';
-import { MembersService } from 'src/app/services/members.service';
+import { Member } from 'src/app/models';
+import { MembersService } from 'src/app/services';
 import { Component } from '@angular/core';
 
 @Component({
