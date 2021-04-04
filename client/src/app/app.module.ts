@@ -1,7 +1,7 @@
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,7 @@ import { MemberCardComponent } from './components/members/member-card/member-car
 import { MemberDetailComponent } from './components/members/member-detail/member-detail.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { MemberListComponent } from './components/members/member-list/member-list.component';
+import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { NavComponent } from './components/nav/nav.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -22,24 +23,23 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { SharedModule } from './modules/shared.module';
-import { PhotoEditorComponent } from './components/members/photo-editor/photo-editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent,
     HomeComponent,
-    RegisterComponent,
-    MemberListComponent,
-    MemberDetailComponent,
     ListsComponent,
-    MessagesComponent,
-    TestErrorsComponent,
-    NotFoundComponent,
-    ServerErrorComponent,
     MemberCardComponent,
+    MemberDetailComponent,
     MemberEditComponent,
+    MemberListComponent,
+    MessagesComponent,
+    NavComponent,
+    NotFoundComponent,
     PhotoEditorComponent,
+    RegisterComponent,
+    ServerErrorComponent,
+    TestErrorsComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -47,8 +47,9 @@ import { PhotoEditorComponent } from './components/members/photo-editor/photo-ed
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    SharedModule,
     NgxSpinnerModule,
+    ReactiveFormsModule,
+    SharedModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
