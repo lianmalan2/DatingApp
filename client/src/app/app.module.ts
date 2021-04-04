@@ -24,6 +24,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { SharedModule } from './modules/shared.module';
 import { TextInputComponent } from './forms/text-input/text-input.component';
+import { DateInputComponent } from './forms/date-input/date-input.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { TextInputComponent } from './forms/text-input/text-input.component';
     ServerErrorComponent,
     TestErrorsComponent,
     TextInputComponent,
+    DateInputComponent,
   ],
   imports: [
     AppRoutingModule,

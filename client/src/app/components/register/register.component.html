@@ -25,10 +25,11 @@
     label="Known As"
     [formControl]="registerForm.get('knownAs')"
   ></app-text-input>
-  <app-text-input
+  <app-date-input
     label="Date Of Birth"
+    [maxDate]="maxDate"
     [formControl]="registerForm.get('dateOfBirth')"
-  ></app-text-input>
+  ></app-date-input>
   <app-text-input
     label="City"
     [formControl]="registerForm.get('city')"
