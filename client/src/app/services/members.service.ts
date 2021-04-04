@@ -25,7 +25,6 @@ export class MembersService {
 
         return this._apiSvc.getByRoute<Member[]>('users').pipe(map(m => ({ updateProp: true, members: m })));;
       }),
-      first(),
       tap(({ updateProp, members }) => updateProp ? this._memberSubject$.next(members) : noop),
       map(({ members }) => members),
     );
@@ -42,13 +41,11 @@ export class MembersService {
 
         return this._apiSvc.getByRoute<Member>(`users/${username}`);
       }),
-      first(),
     );
   }
 
   updateMember(member: Member): Observable<any> {
     return this._apiSvc.putByRoute('users', member).pipe(
-      first(),
       mergeMap(() => this.members$),
       first(),
       tap(members => {
@@ -58,5 +55,9 @@ export class MembersService {
         this._memberSubject$.next(members);
       }),
     );
+  }
+
+  setMainPhoto(photoId: number) {
+    return this._apiSvc.putByRoute(`users/set-main-photo/${photoId}`);
   }
 }
