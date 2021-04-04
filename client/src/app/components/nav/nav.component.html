@@ -27,7 +27,11 @@
     </ul>
 
     <div class="dropdown" *ngIf="loggedIn$ | async" dropdown>
-      <a class="dropdown-toggle text-light button" dropdownToggle>
+      <img
+        src="{{ (currentUser$ | async).photoUrl }}"
+        alt="{{ (currentUser$ | async).username }}"
+      />
+      <a class="dropdown-toggle text-light button ml-2" dropdownToggle>
         Welcome {{ (currentUser$ | async).username | titlecase }}</a
       >
       <div class="dropdown-menu mt-3" *dropdownMenu>

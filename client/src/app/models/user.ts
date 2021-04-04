@@ -6,6 +6,7 @@ export interface AppUser {
 export interface User {
   username: string;
   token: any;
+  photoUrl: string;
 }
 
 export interface LoginInput {
