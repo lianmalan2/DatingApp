@@ -12,12 +12,16 @@ export class RegisterComponent {
 
   model: any = {};
   registerForm: FormGroup;
+  maxDate: Date;
+
 
   constructor(
     private _accountSvc: AccountService,
     protected _fb: FormBuilder,
   ) {
     this.initializeForm();
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
   protected initializeForm() {
