@@ -1,7 +1,7 @@
 import { FileUploader } from 'ng2-file-upload';
 import { take } from 'rxjs/operators';
-import { Member, User } from 'src/app/models';
-import { AccountService } from 'src/app/services';
+import { Member, Photo, User } from 'src/app/models';
+import { AccountService, MembersService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import { Component, Input, OnInit } from '@angular/core';
 
@@ -17,7 +17,7 @@ export class PhotoEditorComponent implements OnInit {
   baseUrl = environment.apiUrl;
   user: User;
 
-  constructor(private _accountSvc: AccountService) {
+  constructor(private _accountSvc: AccountService, protected _memberSvc: MembersService) {
     this._accountSvc.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
@@ -27,6 +27,18 @@ export class PhotoEditorComponent implements OnInit {
 
   fileOverBase(e: any) {
     this.hasBaseDropzoneOver = e;
+  }
+
+  setMainPhoto(photo: Photo): void {
+    this._memberSvc.setMainPhoto(photo.id).subscribe(() => {
+      this.user.photoUrl = photo.url;
+      this._accountSvc.setCurrentUser(this.user);
+      this.member.photoUrl = photo.url;
+      this.member.photos.forEach(p => {
+        if (p.isMain) { p.isMain = false; }
+        if (p.id === photo.id) { p.isMain = true; }
+      })
+    });
   }
 
   initializeUploader() {
