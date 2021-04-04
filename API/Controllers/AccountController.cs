@@ -58,7 +58,10 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var errorMessage = "Invalid Username / Password";
-            var user = await Context.Users.SingleOrDefaultAsync(user => user.UserName.Equals(loginDto.Username.ToLower()));
+            var user = await Context.Users
+                .Include(u => u.Photos)
+                .SingleOrDefaultAsync(user => user.UserName.Equals(loginDto.Username.ToLower()));
+
             if (user == null)
                 return Unauthorized(errorMessage);
 
@@ -73,6 +76,7 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Token = TokenSvc.CreateToken(user),
+                PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
             };
         }
     }

@@ -55,7 +55,7 @@ namespace API.Repositories
         {
             return await Context.Users
                 .ProjectTo<MemberDto>(Mapper.ConfigurationProvider)
-                .ToListAsync(); ;
+                .ToListAsync();
         }
 
         public async Task<MemberDto> GetMemberAsync(string username)
