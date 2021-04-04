@@ -1,6 +1,6 @@
 import { AccountService } from 'src/app/services';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -25,12 +25,21 @@ export class RegisterComponent {
         Validators.minLength(4),
         Validators.maxLength(8),
       ]),
-      confirmPassword: new FormControl('', [Validators.required]),
-    })
+      confirmPassword: new FormControl('', [Validators.required, this.matchValues('password')]),
+    });
+
+    this.registerForm.controls.password.valueChanges.subscribe(() => {
+      this.registerForm.controls.confirmPassword.updateValueAndValidity();
+    });
+  }
+
+  protected matchValues(matchTo: string): ValidatorFn {
+    return (control: AbstractControl) => {
+      return control.value === control?.parent?.controls[matchTo]?.value ? null : { isMatching: true };
+    };
   }
 
   register(): void {
-    console.log(this.registerForm.value);
     //   this._accountSvc.register(this.model).subscribe(user => {
     //     if (!!user) {
     //       this.cancel();
