@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
@@ -44,7 +45,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto member)
         {
-            var user = await UserRepo.getUserByUsernameAsync(User.GetUsername());
+            var user = await UserRepo.GetUserByUsernameAsync(User.GetUsername());
 
             Mapper.Map(member, user);
             UserRepo.Update(user);
@@ -61,7 +62,7 @@ namespace API.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("Photo is required");
 
-            var user = await UserRepo.getUserByUsernameAsync(User.GetUsername());
+            var user = await UserRepo.GetUserByUsernameAsync(User.GetUsername());
             var result = await PhotoService.AddPhotoAsync(file);
 
             if (result.Error != null)
@@ -82,6 +83,26 @@ namespace API.Controllers
                 return CreatedAtRoute("GetUser", new { username = user.UserName }, Ok(Mapper.Map<PhotoDto>(photo)));
 
             return BadRequest("Problem adding photo");
+        }
+
+        [HttpPut("set-main-photo/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(int photoId)
+        {
+            var user = await UserRepo.GetUserByUsernameAsync(User.GetUsername());
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+            if (photo?.IsMain != false)
+                return BadRequest("This is already your main photo");
+
+            var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
+            if (currentMain != null)
+                currentMain.IsMain = false;
+
+            photo.IsMain = true;
+
+            if (await UserRepo.SaveAllAsync())
+                return NoContent();
+
+            return BadRequest("Failed to set main photo");
         }
     }
 }
