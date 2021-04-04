@@ -21,4 +21,8 @@ export class BaseApiService {
   putByRoute<T>(route: string, body: any = {}): Observable<T> {
     return this._http.put<T>(`${this._baseUrl}${route}`, body).pipe(first());
   }
+
+  deleteByRoute<T>(route: string): Observable<T> {
+    return this._http.delete<T>(`${this._baseUrl}${route}`).pipe(first());
+  }
 }

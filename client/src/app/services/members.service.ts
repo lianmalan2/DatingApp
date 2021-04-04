@@ -57,7 +57,11 @@ export class MembersService {
     );
   }
 
-  setMainPhoto(photoId: number) {
+  setMainPhoto(photoId: number): Observable<any> {
     return this._apiSvc.putByRoute(`users/set-main-photo/${photoId}`);
+  }
+
+  deletePhoto(photoId: number): Observable<any> {
+    return this._apiSvc.deleteByRoute(`users/delete-photo/${photoId}`);
   }
 }
