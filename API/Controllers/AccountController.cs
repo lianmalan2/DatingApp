@@ -6,6 +6,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,13 @@ namespace API.Controllers
     {
         private DataContext Context { get; }
         private ITokenService TokenSvc { get; }
+        private IMapper Mapper { get; }
 
-        public AccountController(DataContext context, ITokenService tokenSvc)
+        public AccountController(DataContext context, ITokenService tokenSvc, IMapper mapper)
         {
             Context = context;
             TokenSvc = tokenSvc;
+            Mapper = mapper;
         }
 
         private async Task<bool> UserExists(string username)
@@ -34,24 +37,24 @@ namespace API.Controllers
             if (await UserExists(username))
                 return BadRequest("Username is taken");
 
+            var user = Mapper.Map<AppUser>(registerDto);
+            user.UserName = username;
+
             using (var hmac = new HMACSHA512())
             {
-                var user = new AppUser
-                {
-                    UserName = username,
-                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                    PasswordSalt = hmac.Key,
-                };
-
-                Context.Users.Add(user);
-                await Context.SaveChangesAsync();
-
-                return new UserDto
-                {
-                    Username = user.UserName,
-                    Token = TokenSvc.CreateToken(user),
-                };
+                user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
+                user.PasswordSalt = hmac.Key;
             }
+
+            Context.Users.Add(user);
+            await Context.SaveChangesAsync();
+
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = TokenSvc.CreateToken(user),
+                KnownAs = user.KnownAs,
+            };
         }
 
         [HttpPost("login")]
@@ -77,6 +80,7 @@ namespace API.Controllers
                 Username = user.UserName,
                 Token = TokenSvc.CreateToken(user),
                 PhotoUrl = user.Photos?.FirstOrDefault(p => p.IsMain)?.Url,
+                KnownAs = user.KnownAs,
             };
         }
     }
