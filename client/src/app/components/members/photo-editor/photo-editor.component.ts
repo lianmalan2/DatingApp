@@ -41,6 +41,12 @@ export class PhotoEditorComponent implements OnInit {
     });
   }
 
+  deletePhoto(photo: Photo): void {
+    this._memberSvc.deletePhoto(photo.id).subscribe(() => {
+      this.member.photos = this.member.photos.filter(p => p.id !== photo.id);
+    });
+  }
+
   initializeUploader() {
     this.uploader = new FileUploader({
       url: `${this.baseUrl}users/add-photo`,
