@@ -43,8 +43,7 @@ export class AccountService {
       first(),
       tap((user: User) => {
         if (!!user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this._currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       }),
     );
@@ -56,8 +55,7 @@ export class AccountService {
       first(),
       tap((user: User) => {
         if (!!user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this._currentUserSource.next(user);
+          this.setCurrentUser(user);
         }
       }),
       catchError((err) => {
@@ -69,6 +67,7 @@ export class AccountService {
   }
 
   setCurrentUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
     this._currentUserSource.next(user);
   }
 
