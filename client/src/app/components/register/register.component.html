@@ -2,9 +2,40 @@
   <h2 class="text-center text-primary">Sign up</h2>
   <hr />
 
+  <div class="form-group">
+    <label class="control-label" class="mr-3">I am a: </label>
+    <label class="radio-inline">
+      <input type="radio" value="male" formControlName="gender" />Male
+    </label>
+    <label class="radio-inline">
+      <input
+        type="radio"
+        value="female"
+        formControlName="gender"
+        class="ml-3"
+      />Female
+    </label>
+  </div>
+
   <app-text-input
     label="Username"
     [formControl]="registerForm.get('username')"
+  ></app-text-input>
+  <app-text-input
+    label="Known As"
+    [formControl]="registerForm.get('knownAs')"
+  ></app-text-input>
+  <app-text-input
+    label="Date Of Birth"
+    [formControl]="registerForm.get('dateOfBirth')"
+  ></app-text-input>
+  <app-text-input
+    label="City"
+    [formControl]="registerForm.get('city')"
+  ></app-text-input>
+  <app-text-input
+    label="Country"
+    [formControl]="registerForm.get('country')"
   ></app-text-input>
   <app-text-input
     label="Password"
