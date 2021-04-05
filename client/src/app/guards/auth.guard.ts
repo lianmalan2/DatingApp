@@ -10,8 +10,8 @@ import { AccountService } from '../services/account.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private _accountSvc: AccountService,
-    private _toastrSvc: ToastrService,
+    protected _accountSvc: AccountService,
+    protected _toastrSvc: ToastrService,
   ) {
 
   }

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class BusyService {
   busyRequestCount = 0;
-  constructor(private spinnerSvc: NgxSpinnerService) { }
+  constructor(protected spinnerSvc: NgxSpinnerService) { }
 
   busy() {
     this.busyRequestCount++;

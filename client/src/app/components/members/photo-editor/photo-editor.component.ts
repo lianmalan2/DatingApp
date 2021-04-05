@@ -18,7 +18,7 @@ export class PhotoEditorComponent implements OnInit {
   user$ = this._accountSvc.currentUser$;
 
   constructor(
-    private _accountSvc: AccountService,
+    protected _accountSvc: AccountService,
     protected _memberSvc: MembersService,
   ) { }
 

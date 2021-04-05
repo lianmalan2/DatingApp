@@ -7,7 +7,7 @@ import { AccountService } from '../services/account.service';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   constructor(
-    private _accountSvc: AccountService,
+    protected _accountSvc: AccountService,
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

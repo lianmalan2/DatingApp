@@ -34,7 +34,7 @@ export class MemberDetailComponent {
   );
 
   constructor(
-    private _memberSvc: MembersService,
-    private _route: ActivatedRoute,
+    protected _memberSvc: MembersService,
+    protected _route: ActivatedRoute,
   ) { }
 }

@@ -8,8 +8,8 @@ import { NavigationExtras, Router } from '@angular/router';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
-    private _routerSvc: Router,
-    private _toastrSvc: ToastrService,
+    protected _routerSvc: Router,
+    protected _toastrSvc: ToastrService,
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

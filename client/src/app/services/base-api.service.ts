@@ -8,10 +8,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BaseApiService {
-  private _baseUrl = environment.apiUrl;
+  protected _baseUrl = environment.apiUrl;
 
   constructor(
-    private _http: HttpClient,
+    protected _http: HttpClient,
   ) { }
 
   getByRoute<T>(route: string): Observable<T> {

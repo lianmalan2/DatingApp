@@ -8,11 +8,11 @@ import { BaseApiService } from './base-api.service';
   providedIn: 'root'
 })
 export class MembersService {
-  private _memberSubject$ = new BehaviorSubject([]);
+  protected _memberSubject$ = new BehaviorSubject([]);
   members$: Observable<Member[]> = this._memberSubject$.asObservable();
 
   constructor(
-    private _apiSvc: BaseApiService,
+    protected _apiSvc: BaseApiService,
   ) { }
 
   getMembers(): Observable<Member[]> {

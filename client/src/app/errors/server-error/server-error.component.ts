@@ -10,7 +10,7 @@ export class ServerErrorComponent {
   error: any;
 
   constructor(
-    private _routerSvc: Router,
+    protected _routerSvc: Router,
   ) {
     const navigation = this._routerSvc.getCurrentNavigation();
     this.error = navigation?.extras?.state?.error;
