@@ -1,6 +1,6 @@
 import { FileUploader } from 'ng2-file-upload';
-import { take } from 'rxjs/operators';
-import { Member, Photo, User } from 'src/app/models';
+import { first, mergeMap, tap } from 'rxjs/operators';
+import { Member, Photo } from 'src/app/models';
 import { AccountService, MembersService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import { Component, Input, OnInit } from '@angular/core';
@@ -15,11 +15,12 @@ export class PhotoEditorComponent implements OnInit {
   uploader: FileUploader;
   hasBaseDropzoneOver = false;
   baseUrl = environment.apiUrl;
-  user: User;
+  user$ = this._accountSvc.currentUser$;
 
-  constructor(private _accountSvc: AccountService, protected _memberSvc: MembersService) {
-    this._accountSvc.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
-  }
+  constructor(
+    private _accountSvc: AccountService,
+    protected _memberSvc: MembersService,
+  ) { }
 
   ngOnInit(): void {
     this.initializeUploader();
@@ -30,9 +31,12 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   setMainPhoto(photo: Photo): void {
-    this._memberSvc.setMainPhoto(photo.id).subscribe(() => {
-      this.user.photoUrl = photo.url;
-      this._accountSvc.setCurrentUser(this.user);
+    this._memberSvc.setMainPhoto(photo.id).pipe(
+      mergeMap(() => this.user$),
+      first(),
+    ).subscribe((user) => {
+      user.photoUrl = photo.url;
+      this._accountSvc.setCurrentUser(user);
       this.member.photoUrl = photo.url;
       this.member.photos.forEach(p => {
         if (p.isMain) { p.isMain = false; }
@@ -47,26 +51,37 @@ export class PhotoEditorComponent implements OnInit {
     });
   }
 
-  initializeUploader() {
-    this.uploader = new FileUploader({
-      url: `${this.baseUrl}users/add-photo`,
-      authToken: `Bearer ${this.user.token}`,
-      isHTML5: true,
-      allowedFileType: ['image'],
-      removeAfterUpload: true,
-      autoUpload: false,
-      maxFileSize: 10 * 1024 * 1024,
-    });
+  protected initializeUploader() {
+    this.user$.pipe(
+      first(),
+      tap(user => {
+        this.uploader = new FileUploader({
+          url: `${this.baseUrl}users/add-photo`,
+          authToken: `Bearer ${user.token}`,
+          isHTML5: true,
+          allowedFileType: ['image'],
+          removeAfterUpload: true,
+          autoUpload: false,
+          maxFileSize: 10 * 1024 * 1024,
+        });
 
-    this.uploader.onAfterAddingFile = (file) => {
-      file.withCredentials = false;
-    };
+        this.uploader.onAfterAddingFile = (file) => {
+          file.withCredentials = false;
+        };
 
-    this.uploader.onSuccessItem = (item, response, status, headers) => {
-      if (!!response) {
-        const photo = JSON.parse(response);
-        this.member.photos.push(photo);
-      }
-    }
+        this.uploader.onSuccessItem = (item, response, status, headers) => {
+          if (!!response) {
+            const photo: Photo = JSON.parse(response).value;
+            this.member.photos.push(photo);
+
+            if (photo.isMain) {
+              user.photoUrl = photo.url;
+              this.member.photoUrl = photo.url;
+              this._accountSvc.setCurrentUser(user);
+            }
+          }
+        }
+      }),
+    ).subscribe();
   }
 }

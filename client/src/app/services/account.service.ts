@@ -58,11 +58,6 @@ export class AccountService {
           this.setCurrentUser(user);
         }
       }),
-      catchError((err) => {
-        console.log(err);
-        this._toastrSvc.error(err.error);
-        return of(null);
-      })
     );
   }
 

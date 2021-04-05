@@ -9,7 +9,7 @@ import { NavigationExtras, Router } from '@angular/router';
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private _routerSvc: Router,
-    private _toasterSvc: ToastrService,
+    private _toastrSvc: ToastrService,
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -30,11 +30,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                 throw modelStateErrors.flat();
               }
 
-              this._toasterSvc.error(error.statusText, error.status);
+              this._toastrSvc.error(error.statusText, error.status);
               break;
 
             case 401:
-              this._toasterSvc.error(error.statusText, error.status);
+              this._toastrSvc.error(error.statusText, error.status);
               break;
 
             case 404:
@@ -47,7 +47,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
 
             default:
-              this._toasterSvc.error('Something unexpected went wrong');
+              this._toastrSvc.error('Something unexpected went wrong');
               console.log(error);
 
               break;
