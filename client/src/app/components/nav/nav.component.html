@@ -32,7 +32,7 @@
         alt="{{ (currentUser$ | async).username }}"
       />
       <a class="dropdown-toggle text-light button ml-2" dropdownToggle>
-        Welcome {{ (currentUser$ | async).username | titlecase }}</a
+        Welcome {{ (currentUser$ | async).knownAs | titlecase }}</a
       >
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item button" routerLink="/member/edit"

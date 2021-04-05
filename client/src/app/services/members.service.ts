@@ -4,6 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Member } from '../models/member';
 import { PaginatedResult } from '../models/pagination';
+import { UserParams } from '../models/userParams';
 import { BaseApiService } from './base-api.service';
 
 @Injectable({
@@ -12,31 +13,44 @@ import { BaseApiService } from './base-api.service';
 export class MembersService {
   protected _memberSubject$ = new BehaviorSubject([]);
   members$: Observable<Member[]> = this._memberSubject$.asObservable();
-  paginatedResult: PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
 
   constructor(
     protected _apiSvc: BaseApiService,
   ) { }
 
-  getMembers(page?: number, itemsPerPage?: number): Observable<PaginatedResult<Member[]>> {
+  private getPaginationHeaders(pageNumber: number, pageSize: number) {
     let params = new HttpParams();
 
-    if (!!page && !!itemsPerPage) {
-      params = params.append('pageNumber', page.toString());
-      params = params.append('pageSize', itemsPerPage.toString());
-    }
+    params = params.append('pageNumber', pageNumber.toString());
+    params = params.append('pageSize', pageSize.toString());
 
-    return this._apiSvc.getResponseByRoute<Member[]>('users', params).pipe(
+    return params;
+  }
+
+  private getPaginatedResult<T>(url: string, params: HttpParams): Observable<PaginatedResult<T>> {
+    return this._apiSvc.getResponseByRoute<T>(url, params).pipe(
       map(response => {
-        this.paginatedResult.result = response.body;
+        const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
+        paginatedResult.result = response.body;
+
         const pagination = response.headers.get('Pagination');
         if (!!pagination) {
-          this.paginatedResult.pagination = JSON.parse(pagination);
+          paginatedResult.pagination = JSON.parse(pagination);
         }
 
-        return this.paginatedResult;
+        return paginatedResult;
       })
     );
+  }
+
+  getMembers(userParams: UserParams): Observable<PaginatedResult<Member[]>> {
+    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+
+    params = params.append('minAge', userParams.minAge.toString());
+    params = params.append('maxAge', userParams.maxAge.toString());
+    params = params.append('gender', userParams.gender.toString());
+
+    return this.getPaginatedResult<Member[]>('users', params);
   }
 
   getMember(username: string): Observable<Member> {

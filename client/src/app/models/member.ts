@@ -1,3 +1,4 @@
+import { Gender } from '../models';
 import { Photo } from './photo';
 
 export interface Member {
@@ -8,7 +9,7 @@ export interface Member {
   knownAs: string;
   created: Date;
   lastActive: Date;
-  gender: string;
+  gender: Gender;
   introduction: string;
   lookingFor: string;
   interests: string;

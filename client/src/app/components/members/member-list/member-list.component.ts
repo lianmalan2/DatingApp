@@ -1,6 +1,10 @@
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mergeMap, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import {
+    debounceTime, distinctUntilChanged, filter, first, map, mergeMap, shareReplay
+} from 'rxjs/operators';
+import { UserParams } from 'src/app/models';
 import { MembersService } from 'src/app/services';
+import { AccountService } from 'src/app/services/account.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -10,20 +14,22 @@ import { Component } from '@angular/core';
 })
 export class MemberListComponent {
   protected pageNumberSubject$: BehaviorSubject<number> = new BehaviorSubject(1);
-  protected pageNumber$: Observable<number> = this.pageNumberSubject$.asObservable().pipe(
-    distinctUntilChanged(),
-    shareReplay(1),
-  );;
-
-  protected pageSizeSubject$: BehaviorSubject<number> = new BehaviorSubject(5);
-  protected pageSize$: Observable<number> = this.pageSizeSubject$.asObservable().pipe(
+  protected pageNumber$ = this.pageNumberSubject$.asObservable().pipe(
     distinctUntilChanged(),
     shareReplay(1),
   );
 
-  protected pagedMembers$ = combineLatest([this.pageNumber$, this.pageSize$]).pipe(
+  protected userParamsSubject$: BehaviorSubject<UserParams> = new BehaviorSubject(null);
+  protected userParams$ = this.userParamsSubject$.asObservable().pipe(
+    distinctUntilChanged(),
+    shareReplay(1),
+  );
+
+  protected pagedMembers$ = combineLatest([this.userParams$, this.pageNumber$]).pipe(
+    filter(([params]) => !!params),
     debounceTime(20),
-    mergeMap(([pageNumber, pageSize]) => this._memberSvc.getMembers(pageNumber, pageSize)),
+    map(([params, pageNumber]) => ({ ...params, pageNumber })),
+    mergeMap((params) => this._memberSvc.getMembers(params)),
     shareReplay(1),
   );
 
@@ -32,7 +38,12 @@ export class MemberListComponent {
 
   constructor(
     protected _memberSvc: MembersService,
-  ) { }
+    protected _accountSvc: AccountService,
+  ) {
+    this._accountSvc.currentUser$.pipe(first()).subscribe((user) => {
+      this.userParamsSubject$.next(new UserParams(user));
+    });
+  }
 
   pageChanged(event: any) {
     this.pageNumberSubject$.next(event.page);
