@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
@@ -54,10 +55,14 @@ namespace API.Repositories
 
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
             var query = Context.Users
                 .AsQueryable()
                 .Where(u => u.UserName != userParams.CurrentUsername)
-                .Where(u => u.Gender == userParams.Gender);
+                .Where(u => u.Gender == userParams.Gender)
+                .Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
 
             var inputQuery = query
                 .ProjectTo<MemberDto>(Mapper.ConfigurationProvider)
