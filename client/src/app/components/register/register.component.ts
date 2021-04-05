@@ -1,6 +1,7 @@
 import { AccountService } from 'src/app/services';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,14 +11,14 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 export class RegisterComponent {
   @Output() cancelRegister = new EventEmitter();
 
-  model: any = {};
   registerForm: FormGroup;
   maxDate: Date;
-
+  validationErrors: string[] = [];
 
   constructor(
     private _accountSvc: AccountService,
     protected _fb: FormBuilder,
+    protected _router: Router,
   ) {
     this.initializeForm();
     this.maxDate = new Date();
@@ -52,11 +53,11 @@ export class RegisterComponent {
   }
 
   register(): void {
-    //   this._accountSvc.register(this.model).subscribe(user => {
-    //     if (!!user) {
-    //       this.cancel();
-    //     }
-    //   });
+    this._accountSvc.register(this.registerForm.value).subscribe(user => {
+      this._router.navigateByUrl('/members');
+    }, (error) => {
+      this.validationErrors = error
+    });
   }
 
   cancel(): void {

@@ -28,7 +28,7 @@
 
     <div class="dropdown" *ngIf="loggedIn$ | async" dropdown>
       <img
-        src="{{ (currentUser$ | async).photoUrl }}"
+        src="{{ (currentUser$ | async).photoUrl || './assets/user.png' }}"
         alt="{{ (currentUser$ | async).username }}"
       />
       <a class="dropdown-toggle text-light button ml-2" dropdownToggle>

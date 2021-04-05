@@ -1,4 +1,3 @@
-import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { LoginInput, User } from 'src/app/models';
 import { AccountService } from 'src/app/services';
@@ -20,7 +19,6 @@ export class NavComponent implements OnInit {
   constructor(
     private _accountSvc: AccountService,
     private _routerSvc: Router,
-    private _toastrSvc: ToastrService,
   ) { }
 
   ngOnInit(): void {
