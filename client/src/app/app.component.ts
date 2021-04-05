@@ -9,14 +9,14 @@ import { AccountService } from './services/account.service';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private _accountSvc: AccountService,
+    protected _accountSvc: AccountService,
   ) { }
 
   ngOnInit(): void {
     this.setCurrentUser();
   }
 
-  private setCurrentUser(): void {
+  protected setCurrentUser(): void {
     const user: User = JSON.parse(localStorage.getItem('user'));
     this._accountSvc.setCurrentUser(user);
   }

@@ -16,7 +16,7 @@ export class RegisterComponent {
   validationErrors: string[] = [];
 
   constructor(
-    private _accountSvc: AccountService,
+    protected _accountSvc: AccountService,
     protected _fb: FormBuilder,
     protected _router: Router,
   ) {

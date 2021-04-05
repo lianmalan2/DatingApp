@@ -7,7 +7,7 @@ import { BusyService } from '../services/busy.service';
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
 
-  constructor(private busySvc: BusyService) { }
+  constructor(protected busySvc: BusyService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     this.busySvc.busy();

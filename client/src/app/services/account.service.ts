@@ -10,9 +10,9 @@ import { AppUser, LoginInput, RegisterInput, User } from '../models/user';
   providedIn: 'root'
 })
 export class AccountService {
-  private _currentUserSource = new ReplaySubject<User>(1);
-  private _httpRequestOptions$: Observable<{ [header: string]: string | string[] }> = of({});
-  private _baseUrl = environment.apiUrl;
+  protected _currentUserSource = new ReplaySubject<User>(1);
+  protected _httpRequestOptions$: Observable<{ [header: string]: string | string[] }> = of({});
+  protected _baseUrl = environment.apiUrl;
 
   currentUser$ = this._currentUserSource.asObservable();
   isLoggedIn$ = this.currentUser$.pipe(
@@ -20,8 +20,8 @@ export class AccountService {
   );
 
   constructor(
-    private _http: HttpClient,
-    private _toastrSvc: ToastrService,
+    protected _http: HttpClient,
+    protected _toastrSvc: ToastrService,
   ) {
     this._httpRequestOptions$ = this.currentUser$.pipe(
       map((user) => {

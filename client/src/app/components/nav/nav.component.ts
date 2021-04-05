@@ -10,15 +10,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  private initialLogin: LoginInput = { username: null, password: null };
+  protected initialLogin: LoginInput = { username: null, password: null };
 
   userLogin: LoginInput = { ...this.initialLogin };
   loggedIn$: Observable<boolean>;
   currentUser$: Observable<User>;
 
   constructor(
-    private _accountSvc: AccountService,
-    private _routerSvc: Router,
+    protected _accountSvc: AccountService,
+    protected _routerSvc: Router,
   ) { }
 
   ngOnInit(): void {

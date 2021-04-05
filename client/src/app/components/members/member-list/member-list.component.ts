@@ -12,6 +12,6 @@ export class MemberListComponent {
   members$: Observable<Member[]> = this._memberSvc.getMembers();
 
   constructor(
-    private _memberSvc: MembersService,
+    protected _memberSvc: MembersService,
   ) { }
 }

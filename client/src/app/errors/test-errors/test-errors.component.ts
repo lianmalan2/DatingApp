@@ -11,7 +11,7 @@ export class TestErrorsComponent {
   validationErrors: string[] = [];
 
   constructor(
-    private _httpSvc: HttpClient,
+    protected _httpSvc: HttpClient,
   ) { }
 
   get404Error(): void {

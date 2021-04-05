@@ -24,9 +24,9 @@ export class MemberEditComponent implements OnInit {
   }
 
   constructor(
-    private _accountSvc: AccountService,
-    private _memberSvc: MembersService,
-    private _toastrSvc: ToastrService,
+    protected _accountSvc: AccountService,
+    protected _memberSvc: MembersService,
+    protected _toastrSvc: ToastrService,
   ) { }
 
   ngOnInit(): void {
