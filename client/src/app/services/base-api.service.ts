@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -16,6 +16,10 @@ export class BaseApiService {
 
   getByRoute<T>(route: string): Observable<T> {
     return this._http.get<T>(`${this._baseUrl}${route}`).pipe(first());
+  }
+
+  getResponseByRoute<T>(route: string, params?: any): Observable<HttpResponse<T>> {
+    return this._http.get<T>(`${this._baseUrl}${route}`, { observe: 'response', params }).pipe(first());
   }
 
   putByRoute<T>(route: string, body: any = {}): Observable<T> {
