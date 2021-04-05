@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -27,9 +27,15 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            var result = await UserRepo.GetMembersAsync();
+            var result = await UserRepo.GetMembersAsync(userParams);
+
+            Response.AddPaginationHeader(
+                result.CurrentPage,
+                result.PageSize,
+                result.TotalCount,
+                result.TotalPages);
 
             return Ok(result);
         }
